@@ -15,6 +15,22 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+    
+    // Close mobile menu if open
+    setIsOpen(false);
+  };
+
   const navItems = [
     { name: 'Home', href: '#home', icon: Home },
     { name: 'Properties', href: '#properties', icon: Building },
@@ -46,6 +62,7 @@ const Navigation = () => {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleSmoothScroll(e, item.href)}
                   className={`px-3 py-2 text-sm font-medium transition-colors duration-300 hover:text-gold-500 ${
                     isScrolled ? 'text-gray-700' : 'text-white/90'
                   }`}
@@ -88,8 +105,8 @@ const Navigation = () => {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleSmoothScroll(e, item.href)}
                   className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-gold-500 hover:bg-gold-50/50 rounded-md transition-colors"
-                  onClick={() => setIsOpen(false)}
                 >
                   <Icon className="w-5 h-5 mr-3" />
                   {item.name}
